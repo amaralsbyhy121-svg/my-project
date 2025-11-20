@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حوالات بنك القطييي - النسخة الجاهزة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0D47A1;
+            --secondary: #1976D2;
+            --light: #f5f7fa;
+            --success: #4CAF50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --dark: #333;
+            --gray: #cfd8dc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0D47A1, #1976D2);
+            font-family: 'Cairo', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .logo i {
+            font-size: 40px;
+            background: white;
+            color: var(--primary);
+            padding: 10px;
+            border-radius: 50%;
+        }
+        
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--warning);
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary);
+            font-size: 15px;
+        }
+        
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        @media (max-width: 480px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--gray);
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Cairo', sans-serif;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
+        }
+        
+        .error-message {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        input.error, select.error {
+            border-color: var(--danger);
+        }
+        
+        button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 17px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        button:hover {
+            background: var(--primary);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .result {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 25px;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+        }
+        
+        .result.show {
+            display: flex;
+        }
+        
+        .result h2 {
+            color: var(--success);
+            margin: 0;
+        }
+        
+        .transfer-no {
+            background: #e3f2fd;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
+            letter-spacing: 2px;
+        }
+        
+        .copy-btn {
+            background: var(--warning);
+            padding: 10px 18px;
+            font-size: 15px;
+            width: auto;
+        }
+        
+        .search-box {
+            margin-top: 25px;
+        }
+        
+        .search-box .row {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-box input {
+            flex: 1;
+        }
+        
+        .search-box button {
+            width: auto;
+            padding: 14px 20px;
+        }
+        
+        .search-results {
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .search-results.show {
+            display: block;
+        }
+        
+        .search-results p {
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        
+        .search-results strong {
+            color: var(--primary);
+        }
+        
+        .status-paid {
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .status-pending {
+            color: var(--warning);
+            font-weight: bold;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            color: white;
+            transition: transform 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--warning);
+        }
+        
+        .feature h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: white;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            display: block;
+            animation: fadeInOut 3s ease-in-out;
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateY(20px); }
+            10%, 90% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-university"></i>
+                <h1>بنك <span>القطييي</span></h1>
+            </div>
+            <p class="subtitle">خدمة الحوالات المالية السريعة والآمنة</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-paper-plane"></i> إرسال حوالة جديدة
+                </div>
+                <div class="card-body">
+                    <form id="transferForm">
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="senderName">اسم المرسل</label>
+                                <input type="text" id="senderName" required>
+                                <div class="error-message" id="senderNameError">يرجى إدخال اسم المرسل (أحرف عربية فقط)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="senderPhone">جوال المرسل</label>
+                                <input type="tel" id="senderPhone" required>
+                                <div class="error-message" id="senderPhoneError">يرجى إدخال رقم جوال صحيح (10 أرقام)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="receiverName">اسم المستلم</label>
+                                <input type="text" id="receiverName" required>
+                                <div class="error-message" id="receiverNameError">يرجى إدخال اسم المستلم (أحرف عربية فقط)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="receiverPhone">جوال المستلم</label>
+                                <input type="tel" id="receiverPhone" required>
+                                <div class="error-message" id="receiverPhoneError">يرجى إدخال رقم جوال صحيح (10 أرقام)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="amount">المبلغ (ريال سعودي)</label>
+                            <input type="number" id="amount" min="1" required>
+                            <div class="error-message" id="amountError">يرجى إدخال مبلغ صحيح (أكبر من 0)</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="branch">اختر فرع الاستلام</label>
+                            <select id="branch" required>
+                                <option value="">-- جارِ التحميل --</option>
+                            </select>
+                            <div class="error-message" id="branchError">يرجى اختيار فرع الاستلام</div>
+                        </div>
+                        
+                        <button type="submit" id="submitBtn">
+                            <span id="submitText">إرسال الحوالة</span>
+                            <div class="loader" id="submitLoader"></div>
+                        </button>
+                    </form>
+                    
+                    <div id="result" class="result">
+                        <h2><i class="fas fa-check-circle"></i> تم إصدار الحوالة بنجاح</h2>
+                        <div class="transfer-no" id="transferNo"></div>
+                        <button class="copy-btn" id="copyBtn">
+                            <i class="fas fa-copy"></i> نسخ رقم الحوالة
+                        </button>
+                        <p>يمكن للمستلم الاستلام من أي فرع لبنك القطييي خلال 30 يوم</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-search"></i> الاستعلام عن حوالة
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="searchInput">رقم الحوالة</label>
+                        <div class="row">
+                            <input type="text" id="searchInput" placeholder="أدخل رقم الحوالة (مثال: 2025123400001)">
+                            <button onclick="searchTransfer()" id="searchBtn">
+                                <span id="searchText">استعلام</span>
+                                <div class="loader" id="searchLoader"></div>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="searchResults" class="search-results"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-bolt"></i>
+                <h3>تحويل فوري</h3>
+                <p>إرسال الأموال بشكل فوري وآمن</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-shield-alt"></i>
+                <h3>آمن ومحمي</h3>
+                <p>أعلى معايير الأمان والحماية</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-hand-holding-usd"></i>
+                <h3>أسعار تنافسية</h3>
+                <p>رسوم تحويل منخفضة وتنافسية</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>جميع الحقوق محفوظة &copy; 2023 بنك القطييي - خدمة الحوالات المالية</p>
+        </footer>
+        
+        <div class="notification" id="notification">تم نسخ رقم الحوالة بنجاح!</div>
+    </div>
+
+    <script>
+        // بيانات الفروع (بدلاً من الخادم)
+        const branches = [
+            { id: "1", name: "الفرع الرئيسي - الرياض" },
+            { id: "2", name: "فرع جدة - التحلية" },
+            { id: "3", name: "فرع الدمام - الملك فهد" },
+            { id: "4", name: "فرع مكة - العزيزية" },
+            { id: "5", name: "فرع المدينة المنورة" },
+            { id: "6", name: "فرع الخبر - الراكة" },
+            { id: "7", name: "فرع أبها - المدينة" },
+            { id: "8", name: "فرع الطائف - الشرقية" }
+        ];
+        
+        // بيانات الحوالات المخزنة محلياً
+        let transfers = JSON.parse(localStorage.getItem('bankTransfers')) || [];
+        
+        // تحميل الفروع عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBranches();
+        });
+        
+        // تحميل الفروع في القائمة المنسدلة
+        function loadBranches() {
+            const branchSelect = document.getElementById('branch');
+            branchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>';
+            
+            branches.forEach(branch => {
+                const option = document.createElement('option');
+                option.value = branch.id;
+                option.textContent = branch.name;
+                branchSelect.appendChild(option);
+            });
+        }
+        
+        // التحقق من صحة البيانات
+        function validateForm() {
+            let isValid = true;
+            
+            // اسم المرسل
+            const senderName = document.getElementById('senderName').value.trim();
+            const senderNameError = document.getElementById('senderNameError');
+            if (!senderName || !/^[\u0600-\u06FF\s]+$/.test(senderName)) {
+                document.getElementById('senderName').classList.add('error');
+                senderNameError.classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('senderName').classList.remove('error');
+                senderNameError.classList.remove('show');
+            }
+            
+            // جوال المرسل
+            
+            
+            // المبلغ
+            const amount = document.getElementById('amount').value;
+            const amountError = document.getElementById('amountError');
+            if (!amount || amount <= 0) {
+                document.getElementById('amount').classList.add('error');
+                amountError.classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('amount').classList.remove('error');
+                amountError.classList.remove('show');
+            }
+            
+            // الفرع
+            const branch = document.getElementById('branch').value;
+            const branchError = document.getElementById('branchError');
+            if (!branch) {
+                document.getElementById('branch').classList.add('error');
+                branchError.classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('branch').classList.remove('error');
+                branchError.classList.remove('show');
+            }
+            
+            return isValid;
+        }
+        
+        // إرسال النموذج
+        document.getElementById('transferForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+            
+            const btn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('submitText');
+            const loader = document.getElementById('submitLoader');
+            
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            loader.style.display = 'block';
+            
+            // محاكاة انتظار الخادم
+            setTimeout(function() {
+                const senderName = document.getElementById('senderName').value.trim();
+                const senderPhone = document.getElementById('senderPhone').value.trim();
+                const receiverName = document.getElementById('receiverName').value.trim();
+                const receiverPhone = document.getElementById('receiverPhone').value.trim();
+                const amount = Number(document.getElementById('amount').value);
+                const branchId = document.getElementById('branch').value;
+                
+                // إنشاء رقم حوالة فريد
+                const now = new Date();
+                const transferNo = `TR${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}${(transfers.length + 1).toString().padStart(4, '0')}`;
+                
+                // إنشاء الحوالة
+                const transfer = {
+                    transferNo: transferNo,
+                    senderName: senderName,
+                    senderPhone: senderPhone,
+                    receiverName: receiverName,
+                    receiverPhone: receiverPhone,
+                    amount: amount,
+                    branchId: branchId,
+                    branchName: branches.find(b => b.id === branchId).name,
+                    status: 'PENDING',
+                    date: now.toISOString()
+                };
+                
+                // حفظ الحوالة
+                transfers.push(transfer);
+                localStorage.setItem('bankTransfers', JSON.stringify(transfers));
+                
+                // عرض النتيجة
+                document.getElementById('transferNo').textContent = transferNo;
+                document.getElementById('result').classList.add('show');
+                document.getElementById('transferForm').reset();
+                
+                // إعادة تعيين الزر
+                btn.disabled = false;
+                btnText.style.display = 'block';
+                loader.style.display = 'none';
+                
+                // تمرير إلى أعلى الصفحة لعرض النتيجة
+                document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+            }, 1500);
+        });
+        
+        // نسخ رقم الحوالة
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const transferNo = document.getElementById('transferNo').textContent;
+            navigator.clipboard.writeText(transferNo).then(() => {
+                showNotification('تم نسخ رقم الحوالة بنجاح!');
+            });
+        });
+        
+        // البحث عن حوالة
+        function searchTransfer() {
+            const val = document.getElementById('searchInput').value.trim();
+            const box = document.getElementById('searchResults');
+            const btn = document.getElementById('searchBtn');
+            const btnText = document.getElementById('searchText');
+            const loader = document.getElementById('searchLoader');
+            
+            if (!val) {
+                box.classList.remove('show');
+                return;
+            }
+            
+            // التحقق من صحة رقم الحوالة
+            if (!/^TR\d+$/.test(val)) {
+                box.innerHTML = '<p style="color:red">رقم الحوالة يجب أن يبدأ بـ TR ويتبعه أرقام</p>';
+                box.classList.add('show');
+                return;
+            }
+            
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            loader.style.display = 'block';
+            box.innerHTML = '... جاري البحث';
+            box.classList.add('show');
+            
+            // محاكاة انتظار الخادم
+            setTimeout(function() {
+                const transfer = transfers.find(t => t.transferNo === val);
+                
+                if (transfer) {
+                    const statusClass = transfer.status === 'PAID' ? 'status-paid' : 'status-pending';
+                    const statusText = transfer.status === 'PAID' ? 'تم الاستلام' : 'مُعلّقة';
+                    
+                    box.innerHTML = `
+                        <p><strong>رقم الحوالة:</strong> ${transfer.transferNo}</p>
+                        <p><strong>المرسل:</strong> ${transfer.senderName} (${transfer.senderPhone})</p>
+                        <p><strong>المستلم:</strong> ${transfer.receiverName} (${transfer.receiverPhone})</p>
+                        <p><strong>المبلغ:</strong> ${transfer.amount} ريال سعودي</p>
+                        <p><strong>فرع الاستلام:</strong> ${transfer.branchName}</p>
+                        <p><strong>الحالة:</strong> <span class="${statusClass}">${statusText}</span></p>
+                        <p><strong>تاريخ الإرسال:</strong> ${new Date(transfer.date).toLocaleDateString('ar-SA')}</p>
+                    `;
+                } else {
+                    box.innerHTML = '<p style="color:red">لم يتم العثور على حوالة بهذا الرقم</p>';
+                }
+                
+                btn.disabled = false;
+                btnText.style.display = 'block';
+                loader.style.display = 'none';
+            }, 1000);
+        }
+        
+        // إضافة إدخال بالضغط على Enter في مربع البحث
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchTransfer();
+            }
+        });
+        
+        // عرض الإشعار
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(function() {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
