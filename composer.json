@@ -1,0 +1,8 @@
+{
+    "name": "yourname/alqutaibi-bank-api-skeleton",
+    "description": "Skeleton Laravel API integrating AlQutaibiBank-payment package",
+    "require": {
+        "php": "^8.0 || ^8.1",
+        "alsharie/alqutaibibank-payment": "^1.0"
+    }
+}
